@@ -2,6 +2,9 @@ import 'dotenv/config';
 import express from 'express';
 import {getRandomEmoji, VerifyDiscordRequest} from "./utils.js";
 import {InteractionResponseType, InteractionType} from "discord-interactions";
+import {randomNumberHandle, randomNumberName} from "./commands/randomNumber.js";
+import {testName} from "./commands/test.js";
+import {handleChooseRandomFood, randomFoodName} from "./commands/randomFood.js";
 
 
 // Create App
@@ -28,13 +31,34 @@ app.post('/interactions', async function (req, res) {
     if (type === InteractionType.APPLICATION_COMMAND) {
         const {name} = data;
 
-        if (name === 'test') {
+        if (name === testName) {
             // Send a message into the channel where command was triggered from
             return res.send({
                 type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
                 data: {
                     // Fetches a random emoji to send from a helper function
                     content: 'hello world ' + getRandomEmoji(),
+                },
+            });
+        }
+        if (name === randomNumberName) {
+            let content = randomNumberHandle(req)
+            return res.send({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    // Fetches a random emoji to send from a helper function
+                    content: content,
+                },
+            });
+        }
+
+        if (name === randomFoodName) {
+            let content = handleChooseRandomFood(req)
+            return res.send({
+                type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                data: {
+                    // Fetches a random emoji to send from a helper function
+                    content: content,
                 },
             });
         }

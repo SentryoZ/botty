@@ -1,5 +1,7 @@
+export const testName = 'test'
+
 export const TEST = {
-    name: 'test',
+    name: testName,
     description: 'Basic command',
     type: 1,
 };
